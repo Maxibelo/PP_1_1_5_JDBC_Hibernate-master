@@ -6,12 +6,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UserDaoJDBCImpl implements UserDao {
-    private static final Connection connection = Util.getInstance().getConnection();
+   private static final Connection connection = Util.getConnection();
     public UserDaoJDBCImpl() {
 
     }
 
+    @Override
     public void createUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS users " +
@@ -23,7 +25,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void dropUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS users;");
@@ -31,7 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users" +
                 "(`name`, `last_name`, `age`) VALUES (?, ?, ?);")) {
@@ -44,7 +46,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void removeUserById(long id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users " +
                 "WHERE id = ?;")) {
@@ -54,7 +56,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }
     }
-
+    @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
 
@@ -72,7 +74,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return userList;
         //return null;
     }
-
+    @Override
     public void cleanUsersTable() {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("TRUNCATE TABLE users");
