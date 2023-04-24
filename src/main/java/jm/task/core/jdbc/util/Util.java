@@ -10,8 +10,6 @@ public class Util {
     private static final String hostName = "jdbc:mysql://localhost:3306/mydbtest?useSSL=false";
     private static final String userName = "root";
     private static final String password = "gfhjkm1618";
-    //public Connection connection;
-
 
     public static Connection getConnection() {
         Connection connection = null;
