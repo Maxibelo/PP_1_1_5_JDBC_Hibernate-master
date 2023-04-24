@@ -60,7 +60,8 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> userList = new ArrayList<>();
 
         try (Connection connection = Util.getConnection();
-             ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM users")) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users")) {
+             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new User(resultSet.getString("name"),
                         resultSet.getString("last_name"),
