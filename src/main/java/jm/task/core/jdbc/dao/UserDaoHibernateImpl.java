@@ -16,9 +16,8 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
-        try {
+        try (Session session = Util.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
             session.createSQLQuery("CREATE TABLE IF NOT EXISTS users" +
                     " (id mediumint not null auto_increment, name VARCHAR(45), " +
@@ -32,17 +31,13 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
     }
 
     @Override
     public void dropUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
-        try {
+        try ( Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.createSQLQuery("DROP TABLE if exists users").executeUpdate();
             transaction.commit();
@@ -52,17 +47,13 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
-        try {
+        try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.save(new User(name, lastName, age));
             transaction.commit();
@@ -72,17 +63,13 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
     }
 
     @Override
     public void removeUserById(long id) {
-        Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
-        try {
+        try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
             transaction.commit();
@@ -92,18 +79,15 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
     }
 
     @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        Session session = Util.getSessionFactory().openSession();
+
         Transaction transaction = null;
-        try {
+        try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             list = session.createCriteria(User.class).list();
             transaction.commit();
@@ -112,18 +96,14 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
         return list;
     }
 
     @Override
     public void cleanUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
         Transaction transaction = null;
-        try {
+        try (Session session = Util.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
             final List<User> instances = session.createCriteria(User.class).list();
 
@@ -138,9 +118,6 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            if (session != null)
-                session.close();
         }
     }
 
